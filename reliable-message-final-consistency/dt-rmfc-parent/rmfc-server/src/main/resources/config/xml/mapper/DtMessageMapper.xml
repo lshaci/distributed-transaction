@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lshaci.dt.rmfc.server.mapper.DtMessageMapper">
+
+	<resultMap id="BaseResultMap" type="DtMessage">
+		<result column="id" property="id" />
+		<result column="creator" property="creator" />
+		<result column="create_time" property="createTime" />
+		<result column="confirm_url" property="confirmUrl" />
+		<result column="confirm_param" property="confirmParam" />
+		<result column="content" property="content" />
+		<result column="queue_name" property="queueName" />
+		<result column="sendtime" property="sendtime" />
+		<result column="retries" property="retries" />
+		<result column="current_retry" property="currentRetry" />
+		<result column="status" property="status" />
+		<result column="received_time" property="receivedTime" />
+		<result column="remark" property="remark" />
+	</resultMap>
+	
+	<!-- create table -->
+	<insert id="createTable">
+		CREATE TABLE IF NOT EXISTS `dt_message` (
+			`id` varchar(36) NOT NULL COMMENT '主键(UUID)',
+			`creator` varchar(20) DEFAULT NULL COMMENT '消息的创建者',
+			`create_time` datetime NOT NULL COMMENT '创建消息的时间',
+			`confirm_url` varchar(50) NOT NULL COMMENT '业务确认地址',
+			`confirm_param` varchar(50) NOT NULL COMMENT '业务确认参数',
+			`content` longtext NOT NULL COMMENT '消息内容',
+			`queue_name` varchar(100) NOT NULL COMMENT '队列名称',
+			`send_time` datetime DEFAULT NULL COMMENT '发送消息的时间',
+			`retries` int(2) NOT NULL COMMENT '可重试次数',
+			`current_retry` int(2) DEFAULT '0' COMMENT '当前重试次数',
+			`status` enum('WAITSEND', 'SENDING', 'SENT', 'DEAD') NOT NULL COMMENT '消息状态(1: 待发送, 2: 发送中, 3: 已发送, 4: 已死亡)',
+			`received_time` datetime DEFAULT NULL COMMENT '接收到消息的时间',
+			`remark` varchar(200) DEFAULT NULL COMMENT '备注',
+			PRIMARY KEY (`id`),
+			KEY `message_status_key` (`status`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	</insert>
+	
+	<!-- save one -->
+	<insert id="save" parameterType="DtMessage">
+		insert into dt_message values 
+		(
+			#{id}, #{creator}, #{createTime}, #{confirmUrl}, #{confirmParam}, #{content}, #{queueName}, 
+			#{sendTime}, #{retries}, #{currentRetry}, #{status}, #{receivedTime}, #{remark}
+		)
+	</insert>
+	
+	<!-- delete one by id -->
+	<delete id="delete" parameterType="string">
+		delete from dt_message where id = #{_parameter}
+	</delete>
+	
+	<!-- update condition sql -->
+	<sql id="update_condition">
+		<set>
+			<if test="creator != null and creator !=''">
+				creator = #{creator},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime},
+			</if>
+			<if test="confirmUrl != null and confirmUrl !=''">
+				confirm_url = #{confirmUrl},
+			</if>
+			<if test="confirmParam != null and confirmParam !=''">
+				confirm_param = #{confirmParam},
+			</if>
+			<if test="content != null and content !=''">
+				content = #{content},
+			</if>
+			<if test="queueName != null and queueName !=''">
+				queue_name = #{queueName},
+			</if>
+			<if test="sendTime != null">
+				send_time = #{sendTime},
+			</if>
+			<if test="retries != 0">
+				retries = #{retries},
+			</if>
+			<if test="currentRetry != 0">
+				current_retry = #{currentRetry},
+			</if>
+			<if test="status != null">
+				status = #{status},
+			</if>
+			<if test="receivedTime != null">
+				received_time = #{receivedTime},
+			</if>
+			<if test="remark != null and remark !=''">
+				remark = #{remark},
+			</if>
+		</set>
+	</sql>
+
+	<!-- update one by id -->
+	<update id="update" parameterType="DtMessage">
+		update dt_message 
+		<include refid="update_condition" />
+		where id = #{id}
+	</update>
+	
+	<!-- find one by id -->
+	<select id="find" parameterType="string" resultMap="BaseResultMap">
+		select * from dt_message where id = #{_parameter}
+	</select>
+	
+	<!-- find by status -->
+	<select id="findByStatus" parameterType="top.lshaci.dt.rmfc.common.enums.MessageStatus" resultMap="BaseResultMap">
+		select * from dt_message where status = #{status}
+	</select>
+</mapper>
