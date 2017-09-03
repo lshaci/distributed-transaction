@@ -10,6 +10,9 @@
 		<version>0.0.1-SNAPSHOT</version>
 	</parent>
 
+	<name>Distributed transaction</name>
+	<description>Reliable message final consistency -- server</description>
+	
 	<dependencies>
 		<!-- lshaci validate -->
 		<dependency>
@@ -51,7 +54,6 @@
 		<dependency>
 			<groupId>org.mybatis.spring.boot</groupId>
 			<artifactId>mybatis-spring-boot-starter</artifactId>
-			<version>${mybatis.spring.boot.version}</version>
 		</dependency>
 		<!-- mysql connector java -->
 		<dependency>
@@ -62,7 +64,6 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
-			<version>${druid.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -77,7 +78,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
-	
+
 	<build>
 		<plugins>
 			<plugin>

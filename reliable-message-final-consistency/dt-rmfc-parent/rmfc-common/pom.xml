@@ -21,7 +21,6 @@
 		<dependency>
 			<groupId>io.github.lshaci</groupId>
 			<artifactId>validate</artifactId>
-			<version>0.0.3</version>
 		</dependency>
 	</dependencies>
 

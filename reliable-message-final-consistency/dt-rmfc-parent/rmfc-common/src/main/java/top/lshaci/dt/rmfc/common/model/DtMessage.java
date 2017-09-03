@@ -35,11 +35,13 @@ public class DtMessage implements Serializable {
 	private String content;			// 消息内容
 	@Length(max = 100)
 	private String queueName;		// 队列名称
+	private Date sendTime;			// 发送时间
 	@Between(min = "3", max = "10")
 	private int retries;			// 可重试次数
 	private int currentRetry;		// 当前重试次数
 	@NotNull
 	private MessageStatus status;	// 消息状态(1: 待发送, 2: 发送中, 3: 已发送, 4: 已死亡)
+	private Date receivedTime;		// 接收到消息的时间
 	@Length(max = 200, require = false)
 	private String remark;			// 备注
 	
@@ -95,7 +97,17 @@ public class DtMessage implements Serializable {
 		this.currentRetry = 0;
 		this.status = MessageStatus.WAITSEND;
 	}
+	
+	/**
+	 * Add retry times
+	 */
+	public void addRetry() {
+		this.currentRetry++;
+	}
 
+	/**
+	 * getter and setter
+	 */
 	public String getId() {
 		return id;
 	}
@@ -152,6 +164,14 @@ public class DtMessage implements Serializable {
 		this.queueName = queueName;
 	}
 
+	public Date getSendTime() {
+		return sendTime;
+	}
+
+	public void setSendTime(Date sendTime) {
+		this.sendTime = sendTime;
+	}
+
 	public int getRetries() {
 		return retries;
 	}
@@ -176,6 +196,14 @@ public class DtMessage implements Serializable {
 		this.status = status;
 	}
 
+	public Date getReceivedTime() {
+		return receivedTime;
+	}
+
+	public void setReceivedTime(Date receivedTime) {
+		this.receivedTime = receivedTime;
+	}
+
 	public String getRemark() {
 		return remark;
 	}
@@ -188,9 +216,9 @@ public class DtMessage implements Serializable {
 	public String toString() {
 		return "DtMessage [id=" + id + ", creator=" + creator + ", createTime=" + createTime + ", confirmUrl="
 				+ confirmUrl + ", confirmParam=" + confirmParam + ", content=" + content + ", queueName=" + queueName
-				+ ", retries=" + retries + ", currentRetry=" + currentRetry + ", status=" + status + ", remark="
-				+ remark + "]";
+				+ ", sendTime=" + sendTime + ", retries=" + retries + ", currentRetry=" + currentRetry + ", status="
+				+ status + ", receivedTime=" + receivedTime + ", remark=" + remark + "]";
 	}
-	
+
 }
 
