@@ -38,7 +38,7 @@ public class ScheduledTaskModelServiceImpl implements ScheduledTaskModelService 
 	}
 	
 	/**
-	 * 系统启动时，将所有
+	 * 系统启动时，将所有执行中的任务设置为待执行
 	 */
 	private void init() {
 		int i = mapper.countByStatus(TaskStatus.EXECUTING);
