@@ -24,7 +24,10 @@ import top.lshaci.dt.rmfc.server.mq.producer.ActiveMQProducer;
 import top.lshaci.dt.rmfc.server.service.DtMessageService;
 
 @Service
-@Transactional(isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, rollbackFor = Exception.class)
+@Transactional(
+			isolation = Isolation.REPEATABLE_READ, propagation = Propagation.REQUIRED, 
+			rollbackFor = Exception.class, transactionManager = "transactionManager"
+		)
 public class DtMessageServiceImpl implements DtMessageService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(DtMessageServiceImpl.class);

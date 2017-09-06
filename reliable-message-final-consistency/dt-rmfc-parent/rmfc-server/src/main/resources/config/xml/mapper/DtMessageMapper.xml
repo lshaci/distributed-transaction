@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="top.lshaci.dt.rmfc.server.mapper.DtMessageMapper">
 
-	<resultMap id="BaseResultMap" type="DtMessage">
+	<resultMap id="BaseResultMap" type="top.lshaci.dt.rmfc.common.model.DtMessage">
 		<result column="id" property="id" />
 		<result column="creator" property="creator" />
 		<result column="create_time" property="createTime" />
@@ -40,7 +40,7 @@
 	</insert>
 	
 	<!-- save one -->
-	<insert id="save" parameterType="DtMessage">
+	<insert id="save" parameterType="top.lshaci.dt.rmfc.common.model.DtMessage">
 		insert into dt_message values 
 		(
 			#{id}, #{creator}, #{createTime}, #{confirmUrl}, #{confirmParam}, #{content}, #{queueName}, 
@@ -57,46 +57,46 @@
 	<sql id="update_condition">
 		<set>
 			<if test="creator != null and creator !=''">
-				creator = #{creator},
+				`creator` = #{creator},
 			</if>
 			<if test="createTime != null">
-				create_time = #{createTime},
+				`create_time` = #{createTime},
 			</if>
 			<if test="confirmUrl != null and confirmUrl !=''">
-				confirm_url = #{confirmUrl},
+				`confirm_url` = #{confirmUrl},
 			</if>
 			<if test="confirmParam != null and confirmParam !=''">
-				confirm_param = #{confirmParam},
+				`confirm_param` = #{confirmParam},
 			</if>
 			<if test="content != null and content !=''">
-				content = #{content},
+				`content` = #{content},
 			</if>
 			<if test="queueName != null and queueName !=''">
-				queue_name = #{queueName},
+				`queue_name` = #{queueName},
 			</if>
 			<if test="sendTime != null">
-				send_time = #{sendTime},
+				`send_time` = #{sendTime},
 			</if>
 			<if test="retries != 0">
-				retries = #{retries},
+				`retries` = #{retries},
 			</if>
 			<if test="currentRetry != 0">
-				current_retry = #{currentRetry},
+				`current_retry` = #{currentRetry},
 			</if>
 			<if test="status != null">
-				status = #{status},
+				`status` = #{status},
 			</if>
 			<if test="receivedTime != null">
-				received_time = #{receivedTime},
+				`received_time` = #{receivedTime},
 			</if>
 			<if test="remark != null and remark !=''">
-				remark = #{remark},
+				`remark` = #{remark},
 			</if>
 		</set>
 	</sql>
 
 	<!-- update one by id -->
-	<update id="update" parameterType="DtMessage">
+	<update id="update" parameterType="top.lshaci.dt.rmfc.common.model.DtMessage">
 		update dt_message 
 		<include refid="update_condition" />
 		where id = #{id}
@@ -109,6 +109,6 @@
 	
 	<!-- find by status -->
 	<select id="findByStatus" parameterType="top.lshaci.dt.rmfc.common.enums.MessageStatus" resultMap="BaseResultMap">
-		select * from dt_message where status = #{status}
+		select * from dt_message where `status` = #{status}
 	</select>
 </mapper>

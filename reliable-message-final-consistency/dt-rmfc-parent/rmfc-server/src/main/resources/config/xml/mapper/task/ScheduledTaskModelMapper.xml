@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.lshaci.dt.rmfc.server.task.mapper.ScheduledTaskModelMapper">
+
+	<resultMap id="BaseResultMap" type="top.lshaci.dt.rmfc.server.task.model.ScheduledTaskModel">
+		<result column="id" property="id" />
+		<result column="task_name" property="taskName" />
+		<result column="cron" property="cron" />
+		<result column="last_time" property="lastTime" />
+		<result column="execute_time" property="executeTime" />
+		<result column="next_time" property="nextTime" />
+		<result column="status" property="status" />
+	</resultMap>
+	
+	<!-- create table -->
+	<insert id="createTable">
+		CREATE TABLE IF NOT EXISTS `scheduled_task_model` (
+			`id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '主键',
+			`task_name` varchar(255) NOT NULL COMMENT '任务名称',
+			`cron` varchar(36) NOT NULL COMMENT '时间表达式',
+			`last_time` datetime DEFAULT NULL COMMENT '上一次执行时间',
+			`execute_time` datetime DEFAULT NULL COMMENT '执行时间',
+			`next_time` datetime NOT NULL COMMENT '下次执行时间',
+			`status` enum('WAITEXECUTE', 'EXECUTING') NOT NULL COMMENT '消息状态(1: 待执行, 2: 执行中)',
+			PRIMARY KEY (`id`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+	</insert>
+	
+	<!-- save one -->
+	<insert id="save" parameterType="top.lshaci.dt.rmfc.server.task.model.ScheduledTaskModel">
+		insert into scheduled_task_model values 
+		(
+			null, #{taskName}, #{cron}, #{lastTime}, #{executeTime}, #{nextTime}, #{status}
+		)
+	</insert>
+	
+	<!-- update condition sql -->
+	<sql id="update_condition">
+		<set>
+			<if test="lastTime != null">
+				`last_time` = #{lastTime},
+			</if>
+			<if test="executeTime != null">
+				`execute_time` = #{executeTime},
+			</if>
+			<if test="nextTime != null">
+				`next_time` = #{nextTime},
+			</if>
+			<if test="status != null">
+				`status` = #{status},
+			</if>
+		</set>
+	</sql>
+
+	<!-- update one by task name -->
+	<update id="updateByTaskName" parameterType="top.lshaci.dt.rmfc.server.task.model.ScheduledTaskModel">
+		update scheduled_task_model 
+		<include refid="update_condition" />
+		where task_name = #{taskName}
+	</update>
+	
+	<!-- find by task name -->
+	<select id="findByTaskName" parameterType="String" resultMap="BaseResultMap">
+		select * from scheduled_task_model where task_name = #{_parameter} for update
+	</select>
+	
+	<!-- count by status -->
+	<select id="countByStatus" parameterType="top.lshaci.dt.rmfc.server.task.enums.TaskStatus" resultType="int">
+		select count(1) from scheduled_task_model where status = #{status}
+	</select>
+	
+	<!-- update to wait execute by ids -->
+	<update id="update2WaitExecute" parameterType="top.lshaci.dt.rmfc.server.task.enums.TaskStatus">
+		update scheduled_task_model set status = 'WAITEXECUTE' where status = #{status}
+	</update>
+</mapper>
