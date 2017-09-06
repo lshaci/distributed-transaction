@@ -58,7 +58,6 @@
 		<module>rmfc-common</module>
 		<module>rmfc-server</module>
 		<module>rmfc-core</module>
-		<module>rmfc-test</module>
 	</modules>
 
 	<licenses>
