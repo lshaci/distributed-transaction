@@ -7,12 +7,12 @@
 	<parent>
 		<groupId>top.lshaci</groupId>
 		<artifactId>dt-rmfc-parent</artifactId>
-		<version>0.0.1-SNAPSHOT</version>
+		<version>0.0.1</version>
 	</parent>
 
 	<name>Distributed transaction</name>
 	<description>Reliable message final consistency -- server</description>
-	
+
 	<dependencies>
 		<!-- lshaci validate -->
 		<dependency>
@@ -64,6 +64,16 @@
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
+		</dependency>
+		<!-- gson -->
+		<dependency>
+			<groupId>com.google.code.gson</groupId>
+			<artifactId>gson</artifactId>
+		</dependency>
+		<!-- http client -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
 		</dependency>
 	</dependencies>
 

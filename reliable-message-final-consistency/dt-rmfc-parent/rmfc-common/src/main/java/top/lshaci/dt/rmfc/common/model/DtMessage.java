@@ -73,7 +73,6 @@ public class DtMessage implements Serializable {
 	 * @param content		消息内容
 	 * @param queueName		队列名称
 	 * @param retries		可重试次数
-	 * @param currentRetry	当前重试次数
 	 * @param remark		备注
 	 */
 	public DtMessage(String creator, String confirmUrl, String confirmParam, String content, String queueName,
@@ -105,7 +104,7 @@ public class DtMessage implements Serializable {
 		this.currentRetry++;
 	}
 
-	/**
+	/*
 	 * getter and setter
 	 */
 	public String getId() {
