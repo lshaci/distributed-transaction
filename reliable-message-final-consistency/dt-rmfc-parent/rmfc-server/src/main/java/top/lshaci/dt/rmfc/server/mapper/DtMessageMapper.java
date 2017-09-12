@@ -42,7 +42,7 @@ public interface DtMessageMapper {
 	int update(DtMessage message);
 	
 	/**
-	 * 根据Id查询一条事务消息
+	 * 根据id查询一条事务消息
 	 * 
 	 * @param id		消息id
 	 * @return
